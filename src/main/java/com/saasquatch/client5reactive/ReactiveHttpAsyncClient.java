@@ -51,7 +51,7 @@ public interface ReactiveHttpAsyncClient {
    */
   default <T> Publisher<T> execute(AsyncRequestProducer requestProducer,
       AsyncResponseConsumer<T> responseConsumer) {
-    return execute(requestProducer, responseConsumer, null, HttpClientContext.create());
+    return execute(requestProducer, responseConsumer, HttpClientContext.create());
   }
 
   /**
@@ -74,19 +74,28 @@ public interface ReactiveHttpAsyncClient {
   Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
       AsyncRequestProducer requestProducer, HttpContext context);
 
+  /**
+   * @see #streamingExecute(AsyncRequestProducer, HttpContext)
+   */
   default Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
       AsyncRequestProducer requestProducer) {
     return streamingExecute(requestProducer, HttpClientContext.create());
   }
 
+  /**
+   * @see #streamingExecute(AsyncRequestProducer, HttpContext)
+   */
   default Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
       SimpleHttpRequest request, HttpContext context) {
     return streamingExecute(SimpleRequestProducer.create(request), context);
   }
 
+  /**
+   * @see #streamingExecute(AsyncRequestProducer, HttpContext)
+   */
   default Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
       SimpleHttpRequest request) {
-    return streamingExecute(request, HttpClientContext.create());
+    return streamingExecute(SimpleRequestProducer.create(request));
   }
 
 }
