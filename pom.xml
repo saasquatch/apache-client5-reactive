@@ -6,8 +6,8 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>REPLACEME</name>
-  <url>REPLACEME</url>
+  <name>apache-client5-reactive</name>
+  <url>https://github.com/saasquatch/apache-client5-reactive</url>
   <inceptionYear>2020</inceptionYear>
   <licenses>
     <license>
