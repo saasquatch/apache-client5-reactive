@@ -14,6 +14,11 @@ import org.reactivestreams.Publisher;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
 
+/**
+ * Concrete implementation of {@link ReactiveHttpAsyncClient}.
+ *
+ * @author sli
+ */
 final class ReactiveHttpAsyncClientImpl implements ReactiveHttpAsyncClient {
 
   private final HttpAsyncClient httpAsyncClient;

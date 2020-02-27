@@ -5,6 +5,11 @@ import org.apache.hc.core5.concurrent.FutureCallback;
 import io.reactivex.rxjava3.core.MaybeEmitter;
 import io.reactivex.rxjava3.core.SingleEmitter;
 
+/**
+ * Utilities for {@link FutureCallback}s. Not public.
+ *
+ * @author sli
+ */
 final class FutureCallbacks {
 
   FutureCallbacks() {}
