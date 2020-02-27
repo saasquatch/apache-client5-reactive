@@ -1,6 +1,7 @@
 package com.saasquatch.client5reactive;
 
 import java.nio.ByteBuffer;
+import java.util.concurrent.Future;
 import org.apache.hc.client5.http.async.HttpAsyncClient;
 import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.Message;
@@ -32,8 +33,9 @@ final class ReactiveHttpAsyncClientImpl implements ReactiveHttpAsyncClient {
       AsyncResponseConsumer<T> responseConsumer,
       HandlerFactory<AsyncPushConsumer> pushHandlerFactory, HttpContext context) {
     return Maybe.<T>create(emitter -> {
-      httpAsyncClient.execute(requestProducer, responseConsumer, pushHandlerFactory, context,
-          FutureCallbacks.maybeEmitter(emitter));
+      final Future<T> resultFuture = httpAsyncClient.execute(requestProducer, responseConsumer,
+          pushHandlerFactory, context, FutureCallbacks.maybeEmitter(emitter));
+      emitter.setCancellable(() -> FutureCallbacks.futureCancellable(resultFuture));
     }).toFlowable();
   }
 
@@ -43,7 +45,9 @@ final class ReactiveHttpAsyncClientImpl implements ReactiveHttpAsyncClient {
     return Single.<Message<HttpResponse, Publisher<ByteBuffer>>>create(emitter -> {
       final ReactiveResponseConsumer responseConsumer =
           new ReactiveResponseConsumer(FutureCallbacks.singleEmitter(emitter));
-      httpAsyncClient.execute(requestProducer, responseConsumer, null, context, null);
+      final Future<Void> resultFuture =
+          httpAsyncClient.execute(requestProducer, responseConsumer, null, context, null);
+      emitter.setCancellable(() -> FutureCallbacks.futureCancellable(resultFuture));
     }).toFlowable();
   }
 

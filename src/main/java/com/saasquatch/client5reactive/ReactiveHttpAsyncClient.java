@@ -7,7 +7,6 @@ import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
 import org.apache.hc.client5.http.async.methods.SimpleRequestProducer;
 import org.apache.hc.client5.http.async.methods.SimpleResponseConsumer;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
-import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.core5.concurrent.FutureCallback;
 import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.Message;
@@ -51,7 +50,7 @@ public interface ReactiveHttpAsyncClient {
    */
   default <T> Publisher<T> execute(AsyncRequestProducer requestProducer,
       AsyncResponseConsumer<T> responseConsumer) {
-    return execute(requestProducer, responseConsumer, HttpClientContext.create());
+    return execute(requestProducer, responseConsumer, null);
   }
 
   /**
@@ -65,7 +64,7 @@ public interface ReactiveHttpAsyncClient {
    * @see CloseableHttpAsyncClient#execute(SimpleHttpRequest, FutureCallback)
    */
   default Publisher<SimpleHttpResponse> execute(SimpleHttpRequest request) {
-    return execute(request, HttpClientContext.create());
+    return execute(request, null);
   }
 
   /**
@@ -79,7 +78,7 @@ public interface ReactiveHttpAsyncClient {
    */
   default Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
       AsyncRequestProducer requestProducer) {
-    return streamingExecute(requestProducer, HttpClientContext.create());
+    return streamingExecute(requestProducer, null);
   }
 
   /**
@@ -95,7 +94,7 @@ public interface ReactiveHttpAsyncClient {
    */
   default Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
       SimpleHttpRequest request) {
-    return streamingExecute(SimpleRequestProducer.create(request));
+    return streamingExecute(request, null);
   }
 
 }
