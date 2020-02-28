@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
 
-public class TestFutureCallbacks {
+public class FutureCallbacksTests {
 
   @Test
   public void testSingle() {
