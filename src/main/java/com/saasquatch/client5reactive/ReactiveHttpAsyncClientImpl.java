@@ -1,6 +1,7 @@
 package com.saasquatch.client5reactive;
 
 import java.nio.ByteBuffer;
+import java.util.Objects;
 import java.util.concurrent.Future;
 import org.apache.hc.client5.http.async.HttpAsyncClient;
 import org.apache.hc.core5.http.HttpResponse;
@@ -32,6 +33,8 @@ final class ReactiveHttpAsyncClientImpl implements ReactiveHttpAsyncClient {
   public <T> Publisher<T> execute(AsyncRequestProducer requestProducer,
       AsyncResponseConsumer<T> responseConsumer,
       HandlerFactory<AsyncPushConsumer> pushHandlerFactory, HttpContext context) {
+    Objects.requireNonNull(requestProducer);
+    Objects.requireNonNull(responseConsumer);
     return Maybe.<T>create(emitter -> {
       final Future<T> resultFuture = httpAsyncClient.execute(requestProducer, responseConsumer,
           pushHandlerFactory, context, FutureCallbacks.maybeEmitter(emitter));
@@ -42,6 +45,7 @@ final class ReactiveHttpAsyncClientImpl implements ReactiveHttpAsyncClient {
   @Override
   public Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
       AsyncRequestProducer requestProducer, HttpContext context) {
+    Objects.requireNonNull(requestProducer);
     return Single.<Message<HttpResponse, Publisher<ByteBuffer>>>create(emitter -> {
       final ReactiveResponseConsumer responseConsumer =
           new ReactiveResponseConsumer(FutureCallbacks.singleEmitter(emitter));
