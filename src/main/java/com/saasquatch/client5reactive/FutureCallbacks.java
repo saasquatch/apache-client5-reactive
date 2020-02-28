@@ -1,7 +1,6 @@
 package com.saasquatch.client5reactive;
 
 import java.util.NoSuchElementException;
-import java.util.concurrent.Future;
 import org.apache.hc.core5.concurrent.FutureCallback;
 import io.reactivex.rxjava3.core.MaybeEmitter;
 import io.reactivex.rxjava3.core.SingleEmitter;
@@ -55,12 +54,6 @@ final class FutureCallbacks {
         emitter.onError(new NoSuchElementException());
       }
     };
-  }
-
-  public static void futureCancellable(Future<?> future) {
-    if (!future.isDone() && !future.isCancelled()) {
-      future.cancel(true);
-    }
   }
 
 }
