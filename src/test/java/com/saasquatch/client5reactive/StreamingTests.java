@@ -2,6 +2,7 @@ package com.saasquatch.client5reactive;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequests;
 import org.apache.hc.client5.http.async.methods.SimpleRequestProducer;
 import org.apache.hc.client5.http.async.methods.SimpleResponseConsumer;
@@ -37,7 +38,7 @@ public class StreamingTests {
   }
 
   @Test
-  public void testVanillaExecuteWorks() throws Exception {
+  public void testVanillaExecuteWorks() {
     final byte[] bodyBytes = Flowable.fromPublisher(
         reactiveClient.execute(SimpleRequestProducer.create(SimpleHttpRequests.get(FLOWABLE_URL)),
             SimpleResponseConsumer.create()))
@@ -46,15 +47,28 @@ public class StreamingTests {
   }
 
   @Test
-  public void testBasicStreamingWorks() throws Exception {
+  public void testVanillaStreamingWorks() {
+    final byte[] bodyBytes = Flowable
+        .fromPublisher(reactiveClient
+            .streamingExecute(SimpleRequestProducer.create(SimpleHttpRequests.get(FLOWABLE_URL))))
+        .concatMap(Message::getBody).map(bb -> byteBufferToArray(bb)).reduce(Bytes::concat)
+        .blockingGet();
+    assertArrayEquals(flowableSourceBytes, bodyBytes);
+  }
+
+  @Test
+  public void testBasicStreamingWorks() {
     final byte[] bodyBytes = Flowable
         .fromPublisher(reactiveClient.streamingExecute(SimpleHttpRequests.get(FLOWABLE_URL)))
-        .concatMap(Message::getBody).map(bb -> {
-          final byte[] arr = new byte[bb.remaining()];
-          bb.get(arr);
-          return arr;
-        }).reduce(Bytes::concat).blockingGet();
+        .concatMap(Message::getBody).map(bb -> byteBufferToArray(bb)).reduce(Bytes::concat)
+        .blockingGet();
     assertArrayEquals(flowableSourceBytes, bodyBytes);
+  }
+
+  private static byte[] byteBufferToArray(ByteBuffer bb) {
+    final byte[] arr = new byte[bb.remaining()];
+    bb.get(arr);
+    return arr;
   }
 
 }

@@ -12,7 +12,7 @@ import io.reactivex.rxjava3.core.SingleEmitter;
  */
 final class FutureCallbacks {
 
-  FutureCallbacks() {}
+  private FutureCallbacks() {}
 
   public static <T> FutureCallback<T> singleEmitter(SingleEmitter<T> emitter) {
     return new FutureCallback<T>() {
