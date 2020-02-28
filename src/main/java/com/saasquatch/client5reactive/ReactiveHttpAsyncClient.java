@@ -1,6 +1,8 @@
 package com.saasquatch.client5reactive;
 
 import java.nio.ByteBuffer;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.apache.hc.client5.http.async.HttpAsyncClient;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
 import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
@@ -31,16 +33,17 @@ public interface ReactiveHttpAsyncClient {
    * @see HttpAsyncClient#execute(AsyncRequestProducer, AsyncResponseConsumer, HandlerFactory,
    *      HttpContext, FutureCallback)
    */
-  <T> Publisher<T> execute(AsyncRequestProducer requestProducer,
-      AsyncResponseConsumer<T> responseConsumer,
-      HandlerFactory<AsyncPushConsumer> pushHandlerFactory, HttpContext context);
+  <T> Publisher<T> execute(@Nonnull AsyncRequestProducer requestProducer,
+      @Nonnull AsyncResponseConsumer<T> responseConsumer,
+      @Nullable HandlerFactory<AsyncPushConsumer> pushHandlerFactory,
+      @Nullable HttpContext context);
 
   /**
    * @see CloseableHttpAsyncClient#execute(AsyncRequestProducer, AsyncResponseConsumer, HttpContext,
    *      FutureCallback)
    */
-  default <T> Publisher<T> execute(AsyncRequestProducer requestProducer,
-      AsyncResponseConsumer<T> responseConsumer, HttpContext context) {
+  default <T> Publisher<T> execute(@Nonnull AsyncRequestProducer requestProducer,
+      @Nonnull AsyncResponseConsumer<T> responseConsumer, @Nullable HttpContext context) {
     return execute(requestProducer, responseConsumer, null, context);
   }
 
@@ -48,22 +51,23 @@ public interface ReactiveHttpAsyncClient {
    * @see CloseableHttpAsyncClient#execute(AsyncRequestProducer, AsyncResponseConsumer,
    *      FutureCallback)
    */
-  default <T> Publisher<T> execute(AsyncRequestProducer requestProducer,
-      AsyncResponseConsumer<T> responseConsumer) {
+  default <T> Publisher<T> execute(@Nonnull AsyncRequestProducer requestProducer,
+      @Nonnull AsyncResponseConsumer<T> responseConsumer) {
     return execute(requestProducer, responseConsumer, null);
   }
 
   /**
    * @see CloseableHttpAsyncClient#execute(SimpleHttpRequest, HttpContext, FutureCallback)
    */
-  default Publisher<SimpleHttpResponse> execute(SimpleHttpRequest request, HttpContext context) {
+  default Publisher<SimpleHttpResponse> execute(@Nonnull SimpleHttpRequest request,
+      @Nullable HttpContext context) {
     return execute(SimpleRequestProducer.create(request), SimpleResponseConsumer.create(), context);
   }
 
   /**
    * @see CloseableHttpAsyncClient#execute(SimpleHttpRequest, FutureCallback)
    */
-  default Publisher<SimpleHttpResponse> execute(SimpleHttpRequest request) {
+  default Publisher<SimpleHttpResponse> execute(@Nonnull SimpleHttpRequest request) {
     return execute(request, null);
   }
 
@@ -71,13 +75,13 @@ public interface ReactiveHttpAsyncClient {
    * Execute the given {@link AsyncRequestProducer} and get a streaming response.
    */
   Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
-      AsyncRequestProducer requestProducer, HttpContext context);
+      @Nonnull AsyncRequestProducer requestProducer, @Nullable HttpContext context);
 
   /**
    * @see #streamingExecute(AsyncRequestProducer, HttpContext)
    */
   default Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
-      AsyncRequestProducer requestProducer) {
+      @Nonnull AsyncRequestProducer requestProducer) {
     return streamingExecute(requestProducer, null);
   }
 
@@ -85,7 +89,7 @@ public interface ReactiveHttpAsyncClient {
    * @see #streamingExecute(AsyncRequestProducer, HttpContext)
    */
   default Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
-      SimpleHttpRequest request, HttpContext context) {
+      @Nonnull SimpleHttpRequest request, @Nullable HttpContext context) {
     return streamingExecute(SimpleRequestProducer.create(request), context);
   }
 
@@ -93,7 +97,7 @@ public interface ReactiveHttpAsyncClient {
    * @see #streamingExecute(AsyncRequestProducer, HttpContext)
    */
   default Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
-      SimpleHttpRequest request) {
+      @Nonnull SimpleHttpRequest request) {
     return streamingExecute(request, null);
   }
 
