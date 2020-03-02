@@ -80,16 +80,39 @@ public interface ReactiveHttpAsyncClient {
       @Nullable HttpContext context);
 
   /**
-   * @see #streamingExecute(AsyncRequestProducer, HandlerFactory, HttpContext)
+   * Convenience method for
+   * {@link #streamingExecute(AsyncRequestProducer, HandlerFactory, HttpContext)}
    */
   default Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
       @Nonnull AsyncRequestProducer requestProducer, @Nullable HttpContext context) {
     return streamingExecute(requestProducer, null, context);
   }
 
+  /**
+   * Convenience method for
+   * {@link #streamingExecute(AsyncRequestProducer, HandlerFactory, HttpContext)}
+   */
   default Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
       @Nonnull AsyncRequestProducer requestProducer) {
     return streamingExecute(requestProducer, null);
+  }
+
+  /**
+   * Convenience method for
+   * {@link #streamingExecute(AsyncRequestProducer, HandlerFactory, HttpContext)}
+   */
+  default Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
+      @Nonnull SimpleHttpRequest request, @Nullable HttpContext context) {
+    return streamingExecute(SimpleRequestProducer.create(request), context);
+  }
+
+  /**
+   * Convenience method for
+   * {@link #streamingExecute(AsyncRequestProducer, HandlerFactory, HttpContext)}
+   */
+  default Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
+      @Nonnull SimpleHttpRequest request) {
+    return streamingExecute(request, null);
   }
 
 }

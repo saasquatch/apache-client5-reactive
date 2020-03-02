@@ -44,7 +44,15 @@ public class NullabilityTests {
     assertThrows(NullPointerException.class,
         () -> reactiveClient.execute((SimpleHttpRequest) null));
     assertThrows(NullPointerException.class,
+        () -> reactiveClient.streamingExecute((AsyncRequestProducer) null, null, null));
+    assertThrows(NullPointerException.class,
         () -> reactiveClient.streamingExecute((AsyncRequestProducer) null, null));
+    assertThrows(NullPointerException.class,
+        () -> reactiveClient.streamingExecute((AsyncRequestProducer) null));
+    assertThrows(NullPointerException.class,
+        () -> reactiveClient.streamingExecute((SimpleHttpRequest) null, null));
+    assertThrows(NullPointerException.class,
+        () -> reactiveClient.streamingExecute((SimpleHttpRequest) null));
   }
 
   @Test
