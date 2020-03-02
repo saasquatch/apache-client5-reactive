@@ -81,14 +81,6 @@ public interface ReactiveHttpAsyncClient {
    * @see #streamingExecute(AsyncRequestProducer, HttpContext)
    */
   default Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
-      @Nonnull AsyncRequestProducer requestProducer) {
-    return streamingExecute(requestProducer, null);
-  }
-
-  /**
-   * @see #streamingExecute(AsyncRequestProducer, HttpContext)
-   */
-  default Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
       @Nonnull SimpleHttpRequest request, @Nullable HttpContext context) {
     return streamingExecute(SimpleRequestProducer.create(request), context);
   }

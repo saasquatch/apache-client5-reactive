@@ -45,8 +45,6 @@ public class NullabilityTests {
         () -> reactiveClient.execute((SimpleHttpRequest) null));
     assertThrows(NullPointerException.class,
         () -> reactiveClient.streamingExecute((AsyncRequestProducer) null, null));
-    assertThrows(NullPointerException.class,
-        () -> reactiveClient.streamingExecute((AsyncRequestProducer) null));
   }
 
   @Test
