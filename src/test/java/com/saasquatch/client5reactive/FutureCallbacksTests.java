@@ -1,7 +1,7 @@
 package com.saasquatch.client5reactive;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
+import java.util.concurrent.CancellationException;
 import org.apache.hc.core5.concurrent.BasicFuture;
 import org.junit.jupiter.api.Test;
 import io.reactivex.rxjava3.core.Maybe;
@@ -26,7 +26,7 @@ public class FutureCallbacksTests {
     Single.<Integer>create(emitter -> {
       final BasicFuture<Integer> future = new BasicFuture<>(FutureCallbacks.singleEmitter(emitter));
       future.cancel();
-    }).test().assertError(NoSuchElementException.class);
+    }).test().assertError(CancellationException.class);
   }
 
   @Test
@@ -46,7 +46,7 @@ public class FutureCallbacksTests {
     Maybe.<Integer>create(emitter -> {
       final BasicFuture<Integer> future = new BasicFuture<>(FutureCallbacks.maybeEmitter(emitter));
       future.cancel();
-    }).test().assertError(NoSuchElementException.class);
+    }).test().assertError(CancellationException.class);
   }
 
 }
