@@ -1,5 +1,6 @@
 package com.saasquatch.client5reactive;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequests;
@@ -56,11 +57,11 @@ public class NullabilityTests {
   }
 
   @Test
-  public void testEmptyPublisher() {
+  public void testVoidPublisher() {
     final Publisher<Void> voidResultPublisher = reactiveClient.execute(
         SimpleRequestProducer.create(SimpleHttpRequests.get("https://example.com")),
         new ReactiveResponseConsumer());
-    Flowable.fromPublisher(voidResultPublisher).test().assertEmpty();
+    assertDoesNotThrow(() -> Flowable.fromPublisher(voidResultPublisher).blockingSubscribe());
   }
 
 }
