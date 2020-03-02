@@ -1,6 +1,6 @@
 package com.saasquatch.client5reactive;
 
-import java.util.NoSuchElementException;
+import java.util.concurrent.CancellationException;
 import org.apache.hc.core5.concurrent.FutureCallback;
 import io.reactivex.rxjava3.core.MaybeEmitter;
 import io.reactivex.rxjava3.core.SingleEmitter;
@@ -29,7 +29,7 @@ final class FutureCallbacks {
 
       @Override
       public void cancelled() {
-        emitter.onError(new NoSuchElementException());
+        emitter.onError(new CancellationException());
       }
 
     };
@@ -54,7 +54,7 @@ final class FutureCallbacks {
 
       @Override
       public void cancelled() {
-        emitter.onError(new NoSuchElementException());
+        emitter.onError(new CancellationException());
       }
 
     };
