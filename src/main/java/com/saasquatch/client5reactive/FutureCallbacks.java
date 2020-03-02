@@ -16,6 +16,7 @@ final class FutureCallbacks {
 
   public static <T> FutureCallback<T> singleEmitter(SingleEmitter<T> emitter) {
     return new FutureCallback<T>() {
+
       @Override
       public void completed(T result) {
         emitter.onSuccess(result);
@@ -30,11 +31,13 @@ final class FutureCallbacks {
       public void cancelled() {
         emitter.onError(new NoSuchElementException());
       }
+
     };
   }
 
   public static <T> FutureCallback<T> maybeEmitter(MaybeEmitter<T> emitter) {
     return new FutureCallback<T>() {
+
       @Override
       public void completed(T result) {
         if (result == null) {
@@ -53,6 +56,7 @@ final class FutureCallbacks {
       public void cancelled() {
         emitter.onError(new NoSuchElementException());
       }
+
     };
   }
 
