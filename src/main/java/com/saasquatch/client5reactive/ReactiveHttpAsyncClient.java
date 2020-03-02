@@ -72,25 +72,24 @@ public interface ReactiveHttpAsyncClient {
   }
 
   /**
-   * Execute the given {@link AsyncRequestProducer} and get a streaming response.
+   * Execute the given request and get a streaming response.
    */
   Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
-      @Nonnull AsyncRequestProducer requestProducer, @Nullable HttpContext context);
+      @Nonnull AsyncRequestProducer requestProducer,
+      @Nullable HandlerFactory<AsyncPushConsumer> pushHandlerFactory,
+      @Nullable HttpContext context);
 
   /**
-   * @see #streamingExecute(AsyncRequestProducer, HttpContext)
+   * @see #streamingExecute(AsyncRequestProducer, HandlerFactory, HttpContext)
    */
   default Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
-      @Nonnull SimpleHttpRequest request, @Nullable HttpContext context) {
-    return streamingExecute(SimpleRequestProducer.create(request), context);
+      @Nonnull AsyncRequestProducer requestProducer, @Nullable HttpContext context) {
+    return streamingExecute(requestProducer, null, context);
   }
 
-  /**
-   * @see #streamingExecute(AsyncRequestProducer, HttpContext)
-   */
   default Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
-      @Nonnull SimpleHttpRequest request) {
-    return streamingExecute(request, null);
+      @Nonnull AsyncRequestProducer requestProducer) {
+    return streamingExecute(requestProducer, null);
   }
 
 }

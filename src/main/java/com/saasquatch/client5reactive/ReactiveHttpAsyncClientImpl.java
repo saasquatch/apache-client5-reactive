@@ -42,12 +42,13 @@ final class ReactiveHttpAsyncClientImpl implements ReactiveHttpAsyncClient {
 
   @Override
   public Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
-      AsyncRequestProducer requestProducer, HttpContext context) {
+      AsyncRequestProducer requestProducer, HandlerFactory<AsyncPushConsumer> pushHandlerFactory,
+      HttpContext context) {
     Objects.requireNonNull(requestProducer);
     return Single.<Message<HttpResponse, Publisher<ByteBuffer>>>create(emitter -> {
       final ReactiveResponseConsumer responseConsumer =
           new ReactiveResponseConsumer(FutureCallbacks.singleEmitter(emitter));
-      httpAsyncClient.execute(requestProducer, responseConsumer, null, context, null);
+      httpAsyncClient.execute(requestProducer, responseConsumer, pushHandlerFactory, context, null);
     }).toFlowable();
   }
 
