@@ -21,6 +21,7 @@ public final class ReactiveHttpAsyncClients {
    * does not support lifecycle management, so you'll need to manage the lifecycle of the given
    * {@link HttpAsyncClient} yourself.
    */
+  @Nonnull
   public static ReactiveHttpAsyncClient create(@Nonnull HttpAsyncClient httpAsyncClient) {
     Objects.requireNonNull(httpAsyncClient);
     return new ReactiveHttpAsyncClientImpl(httpAsyncClient);
