@@ -3,6 +3,7 @@ package com.saasquatch.client5reactive;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import org.apache.hc.client5.http.async.HttpAsyncClient;
+import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 import org.apache.hc.client5.http.impl.async.HttpAsyncClients;
 
 /**
@@ -18,8 +19,9 @@ public final class ReactiveHttpAsyncClients {
   /**
    * Create a {@link ReactiveHttpAsyncClient} from a given {@link HttpAsyncClient}. Note that the
    * created {@link ReactiveHttpAsyncClient} is simply a wrapper of the {@link HttpAsyncClient} and
-   * does not support lifecycle management, so you'll need to manage the lifecycle of the given
-   * {@link HttpAsyncClient} yourself.
+   * does not support state management, so you'll need to manage the state of the given
+   * {@link HttpAsyncClient} yourself by calling {@link CloseableHttpAsyncClient#start()},
+   * {@link CloseableHttpAsyncClient#close()}, etc.
    */
   @Nonnull
   public static ReactiveHttpAsyncClient create(@Nonnull HttpAsyncClient httpAsyncClient) {
