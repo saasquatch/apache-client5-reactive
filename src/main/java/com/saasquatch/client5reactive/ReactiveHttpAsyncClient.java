@@ -20,7 +20,8 @@ import org.apache.hc.core5.http.protocol.HttpContext;
 import org.reactivestreams.Publisher;
 
 /**
- * Thin wrapper around Apache {@link HttpAsyncClient} to expose Reactive Streams interfaces.<br>
+ * Thin wrapper around Apache {@link HttpAsyncClient} to expose
+ * <a href="https://www.reactive-streams.org/">Reactive Streams</a> interfaces.<br>
  * The methods in this interface aim to mirror the ones in {@link HttpAsyncClient} and
  * {@link CloseableHttpAsyncClient}.
  *

@@ -29,7 +29,7 @@ final class FutureCallbacks {
 
       @Override
       public void cancelled() {
-        emitter.onError(new CancellationException());
+        emitter.onError(cancelledException());
       }
 
     };
@@ -54,10 +54,14 @@ final class FutureCallbacks {
 
       @Override
       public void cancelled() {
-        emitter.onError(new CancellationException());
+        emitter.onError(cancelledException());
       }
 
     };
+  }
+
+  private static Exception cancelledException() {
+    return new CancellationException("Future cancelled");
   }
 
 }
