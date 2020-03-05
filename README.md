@@ -8,6 +8,10 @@ Thin wrapper around Apache HttpAsyncClient 5.x to expose Reactive Streams interf
 
 ## Adding it to your project
 
+## Sample usage
+
+TODO
+
 ### Add the repository
 
 Maven
