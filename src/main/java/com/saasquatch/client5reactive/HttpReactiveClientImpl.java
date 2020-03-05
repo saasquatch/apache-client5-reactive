@@ -13,7 +13,6 @@ import org.apache.hc.core5.http.protocol.HttpContext;
 import org.apache.hc.core5.reactive.ReactiveResponseConsumer;
 import org.reactivestreams.Publisher;
 import io.reactivex.rxjava3.core.Maybe;
-import io.reactivex.rxjava3.core.Single;
 
 /**
  * Concrete implementation of {@link HttpReactiveClient}.
@@ -45,9 +44,14 @@ final class HttpReactiveClientImpl implements HttpReactiveClient {
       AsyncRequestProducer requestProducer, HandlerFactory<AsyncPushConsumer> pushHandlerFactory,
       HttpContext context) {
     Objects.requireNonNull(requestProducer);
-    return Single.<Message<HttpResponse, Publisher<ByteBuffer>>>create(emitter -> {
+    /*
+     * Semantically this should be a Single instead of a Maybe, but using Single here requires an
+     * additional implementation of FutureCallback, and since we are returning a Publisher, it
+     * doesn't really make a difference.
+     */
+    return Maybe.<Message<HttpResponse, Publisher<ByteBuffer>>>create(emitter -> {
       final ReactiveResponseConsumer responseConsumer =
-          new ReactiveResponseConsumer(FutureCallbacks.singleEmitter(emitter));
+          new ReactiveResponseConsumer(FutureCallbacks.maybeEmitter(emitter));
       httpAsyncClient.execute(requestProducer, responseConsumer, pushHandlerFactory, context, null);
     }).toFlowable();
   }
