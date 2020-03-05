@@ -18,7 +18,10 @@ public class Example {
       asyncClient.start();
       final HttpReactiveClient reactiveClient = HttpReactiveClients.create(asyncClient);
       Single.fromPublisher(reactiveClient.execute(SimpleHttpRequests.get(EXAMPLE_URL)))
-          .doOnSuccess(response -> System.out.println(response.getCode()))
+          .doOnSuccess(response -> {
+            System.out.println(response.getCode());
+            System.out.println(response.getBodyText());
+          })
           .blockingSubscribe();
       System.out.println("----------");
       Single.fromPublisher(reactiveClient.streamingExecute(SimpleHttpRequests.get(EXAMPLE_URL)))
