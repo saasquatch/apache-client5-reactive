@@ -8,14 +8,15 @@ import io.reactivex.rxjava3.core.Flowable;
 
 public class LifecycleTests {
 
+  private static final String EXAMPLE_URL = "https://www.example.com";
+
   @Test
   public void testNonStarted() throws Exception {
     try (CloseableHttpAsyncClient asyncClient = HttpAsyncClients.createDefault()) {
       // Not started
       final HttpReactiveClient reactiveClient = HttpReactiveClients.create(asyncClient);
-      Flowable
-          .fromPublisher(reactiveClient.execute(SimpleHttpRequests.get("https://www.example.com")))
-          .test().assertError(IllegalStateException.class);
+      Flowable.fromPublisher(reactiveClient.execute(SimpleHttpRequests.get(EXAMPLE_URL))).test()
+          .assertError(IllegalStateException.class);
     }
   }
 
@@ -27,9 +28,8 @@ public class LifecycleTests {
       reactiveClient = HttpReactiveClients.create(asyncClient);
     }
     // Closed
-    Flowable
-        .fromPublisher(reactiveClient.execute(SimpleHttpRequests.get("https://www.example.com")))
-        .test().assertError(IllegalStateException.class);
+    Flowable.fromPublisher(reactiveClient.execute(SimpleHttpRequests.get(EXAMPLE_URL))).test()
+        .assertError(IllegalStateException.class);
   }
 
 }
