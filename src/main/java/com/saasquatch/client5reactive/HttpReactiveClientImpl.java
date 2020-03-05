@@ -16,15 +16,15 @@ import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
 
 /**
- * Concrete implementation of {@link ReactiveHttpAsyncClient}.
+ * Concrete implementation of {@link HttpReactiveClient}.
  *
  * @author sli
  */
-final class ReactiveHttpAsyncClientImpl implements ReactiveHttpAsyncClient {
+final class HttpReactiveClientImpl implements HttpReactiveClient {
 
   private final HttpAsyncClient httpAsyncClient;
 
-  ReactiveHttpAsyncClientImpl(HttpAsyncClient httpAsyncClient) {
+  HttpReactiveClientImpl(HttpAsyncClient httpAsyncClient) {
     this.httpAsyncClient = httpAsyncClient;
   }
 

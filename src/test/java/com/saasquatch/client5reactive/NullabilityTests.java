@@ -18,13 +18,13 @@ import io.reactivex.rxjava3.core.Flowable;
 public class NullabilityTests {
 
   private static CloseableHttpAsyncClient asyncClient;
-  private static ReactiveHttpAsyncClient reactiveClient;
+  private static HttpReactiveClient reactiveClient;
 
   @BeforeAll
   public static void beforeAll() {
     asyncClient = HttpAsyncClients.createDefault();
     asyncClient.start();
-    reactiveClient = ReactiveHttpAsyncClients.create(asyncClient);
+    reactiveClient = HttpReactiveClients.create(asyncClient);
   }
 
   @AfterAll

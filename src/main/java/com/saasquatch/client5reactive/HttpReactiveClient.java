@@ -26,9 +26,9 @@ import org.reactivestreams.Publisher;
  * {@link CloseableHttpAsyncClient}.
  *
  * @author sli
- * @see ReactiveHttpAsyncClients
+ * @see HttpReactiveClients
  */
-public interface ReactiveHttpAsyncClient {
+public interface HttpReactiveClient {
 
   /**
    * @see HttpAsyncClient#execute(AsyncRequestProducer, AsyncResponseConsumer, HandlerFactory,

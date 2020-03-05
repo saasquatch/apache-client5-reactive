@@ -24,14 +24,14 @@ public class StreamingTests {
   private static final String FLOWABLE_SOURCE_URL =
       "https://cdn.jsdelivr.net/gh/ReactiveX/RxJava@81f0569a8b9b7d27059f127b90fd7335118b2ee4/src/main/java/io/reactivex/rxjava3/core/Flowable.java";
   private static CloseableHttpAsyncClient asyncClient;
-  private static ReactiveHttpAsyncClient reactiveClient;
+  private static HttpReactiveClient reactiveClient;
   private static byte[] flowableSourceBytes;
 
   @BeforeAll
   public static void beforeAll() throws Exception {
     asyncClient = HttpAsyncClients.createDefault();
     asyncClient.start();
-    reactiveClient = ReactiveHttpAsyncClients.create(asyncClient);
+    reactiveClient = HttpReactiveClients.create(asyncClient);
     flowableSourceBytes =
         asyncClient.execute(SimpleHttpRequests.get(FLOWABLE_SOURCE_URL), null).get().getBodyBytes();
   }

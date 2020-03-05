@@ -12,7 +12,7 @@ public class LifecycleTests {
   public void testNonStarted() throws Exception {
     try (CloseableHttpAsyncClient asyncClient = HttpAsyncClients.createDefault()) {
       // Not started
-      final ReactiveHttpAsyncClient reactiveClient = ReactiveHttpAsyncClients.create(asyncClient);
+      final HttpReactiveClient reactiveClient = HttpReactiveClients.create(asyncClient);
       Flowable.fromPublisher(reactiveClient.execute(SimpleHttpRequests.get("https://example.com")))
           .test().assertError(IllegalStateException.class);
     }
@@ -20,10 +20,10 @@ public class LifecycleTests {
 
   @Test
   public void testClosed() throws Exception {
-    final ReactiveHttpAsyncClient reactiveClient;
+    final HttpReactiveClient reactiveClient;
     try (CloseableHttpAsyncClient asyncClient = HttpAsyncClients.createDefault()) {
       asyncClient.start();
-      reactiveClient = ReactiveHttpAsyncClients.create(asyncClient);
+      reactiveClient = HttpReactiveClients.create(asyncClient);
     }
     // Closed
     Flowable.fromPublisher(reactiveClient.execute(SimpleHttpRequests.get("https://example.com")))
