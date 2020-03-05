@@ -63,7 +63,7 @@ final class HttpReactiveClientImpl implements HttpReactiveClient {
 
   /**
    * Create a default {@link HttpContext} if the given one is null. In theory this method should not
-   * be needed, since according to the Javadoc in {@link HttpAsyncClient}, {@link HttpContext} can
+   * be needed, since according to the JavaDoc in {@link HttpAsyncClient}, {@link HttpContext} can
    * be null. However, in Apache HttpClient version 5.0 there's a bug where
    * {@link MinimalHttpAsyncClient} does not accept null {@link HttpContext}. An issue has already
    * been filed <a href="https://issues.apache.org/jira/browse/HTTPCLIENT-2059">here</a>. Once
