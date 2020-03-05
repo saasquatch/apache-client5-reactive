@@ -41,14 +41,14 @@ Maven
 <dependency>
   <groupId>com.github.saasquatch</groupId>
   <artifactId>apache-client5-reactive</artifactId>
-  <version>REPLACEME</version>
+  <version>0.0.1</version>
 </dependency>
 ```
 
 Gradle
 
 ```gradle
-compile 'com.github.saasquatch:apache-client5-reactive:REPLACEME'
+compile 'com.github.saasquatch:apache-client5-reactive:0.0.1'
 ```
 
 ## License
