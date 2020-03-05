@@ -5,7 +5,6 @@ import java.nio.ByteBuffer;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequests;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 import org.apache.hc.client5.http.impl.async.HttpAsyncClients;
-import org.apache.hc.core5.http.Message;
 import com.saasquatch.client5reactive.HttpReactiveClient;
 import com.saasquatch.client5reactive.HttpReactiveClients;
 import io.reactivex.rxjava3.core.Single;
@@ -23,8 +22,10 @@ public class Example {
           .blockingSubscribe();
       System.out.println("----------");
       Single.fromPublisher(reactiveClient.streamingExecute(SimpleHttpRequests.get(EXAMPLE_URL)))
-          .doOnSuccess(message -> System.out.println(message.getHead().getCode()))
-          .flatMapPublisher(Message::getBody)
+          .flatMapPublisher(message -> {
+            System.out.println(message.getHead().getCode());
+            return message.getBody();
+          })
           .toList()
           .map(byteBuffers -> {
             final int totalLength = byteBuffers.stream().mapToInt(ByteBuffer::remaining).sum();

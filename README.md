@@ -10,7 +10,7 @@ Thin wrapper around Apache HttpAsyncClient 5.x to expose Reactive Streams interf
 
 ## Sample usage
 
-TODO
+For examples, see package [`com.saasquatch.client5reactive.examples`](https://github.com/saasquatch/apache-client5-reactive/tree/master/src/test/java/com/saasquatch/client5reactive/examples).
 
 ### Add the repository
 
