@@ -53,7 +53,7 @@ public class StreamingTests {
   public void testVanillaStreamingWorks() {
     final byte[] bodyBytes = Flowable
         .fromPublisher(reactiveClient.streamingExecute(
-            SimpleRequestProducer.create(SimpleHttpRequests.get(FLOWABLE_SOURCE_URL)), null))
+            SimpleRequestProducer.create(SimpleHttpRequests.get(FLOWABLE_SOURCE_URL))))
         .concatMap(Message::getBody).to(this::toByteArray);
     assertArrayEquals(flowableSourceBytes, bodyBytes);
   }
