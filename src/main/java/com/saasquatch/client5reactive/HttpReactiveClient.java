@@ -66,7 +66,8 @@ public interface HttpReactiveClient {
   }
 
   /**
-   * Execute the given request. This method is equivalent to
+   * Execute a simple in-memory request and get a simple in-memory response. This method is
+   * equivalent to
    * {@link CloseableHttpAsyncClient#execute(SimpleHttpRequest, HttpContext, FutureCallback)}. The
    * returning {@link Publisher} completes with exactly 1 element.
    */
@@ -111,7 +112,7 @@ public interface HttpReactiveClient {
   }
 
   /**
-   * Convenience method for
+   * Execute a simple in-memory request and get a streaming response. Convenience method for
    * {@link #streamingExecute(AsyncRequestProducer, HandlerFactory, HttpContext)}
    */
   default Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
