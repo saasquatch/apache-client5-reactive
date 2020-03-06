@@ -86,7 +86,8 @@ public interface HttpReactiveClient {
 
   /**
    * Execute the given request and get a streaming response body as a {@link Publisher} of
-   * {@link ByteBuffer}s. The returning {@link Publisher} completes with exactly 1 element.
+   * {@link ByteBuffer}s. The returning {@link Publisher} completes with exactly 1 element. The
+   * {@link Publisher} within the returning {@link Publisher} may contain 0 to n elements.
    */
   Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
       @Nonnull AsyncRequestProducer requestProducer,
