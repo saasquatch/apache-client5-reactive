@@ -11,26 +11,40 @@ import io.reactivex.rxjava3.core.Single;
 
 public class Example {
 
-  private static final String EXAMPLE_URL = "https://www.example.com";
-
   public static void main(String[] args) throws Exception {
+    // Create a CloseableHttpAsyncClient first
     try (CloseableHttpAsyncClient asyncClient = HttpAsyncClients.createDefault()) {
+      /*
+       * HttpReactiveClient does not support lifecycle management, so the underlying
+       * CloseableHttpAsyncClient needs to be started and closed.
+       */
       asyncClient.start();
+      // HttpReactiveClient is just a thin wrapper
       final HttpReactiveClient reactiveClient = HttpReactiveClients.create(asyncClient);
-      Single.fromPublisher(reactiveClient.execute(SimpleHttpRequests.get(EXAMPLE_URL)))
+      // Execute a simple in-memory request
+      Single
+          .fromPublisher(reactiveClient.execute(SimpleHttpRequests.get("https://www.example.com")))
           .doOnSuccess(response -> {
+            // Get the response status and body in memory
             System.out.println(response.getCode());
             System.out.println(response.getBodyText());
           })
           .blockingSubscribe();
       System.out.println("----------");
-      Single.fromPublisher(reactiveClient.streamingExecute(SimpleHttpRequests.get(EXAMPLE_URL)))
+      // Execute a streaming request
+      // In this case, the request is a simple in-memory request without a request body
+      Single
+          .fromPublisher(
+              reactiveClient.streamingExecute(SimpleHttpRequests.get("https://www.example.com")))
           .flatMapPublisher(message -> {
+            // Get the status before subscribing to the streaming body
             System.out.println(message.getHead().getCode());
             return message.getBody();
           })
+          // Collect the streaming body chunks into a List
           .toList()
           .map(byteBuffers -> {
+            // Concatenate the body chunks and decode with UTF-8
             final int totalLength = byteBuffers.stream().mapToInt(ByteBuffer::remaining).sum();
             final ByteBuffer combined = ByteBuffer.allocate(totalLength);
             byteBuffers.forEach(combined::put);
