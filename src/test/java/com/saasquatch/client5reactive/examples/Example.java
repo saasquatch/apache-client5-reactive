@@ -16,7 +16,7 @@ public class Example {
     try (CloseableHttpAsyncClient asyncClient = HttpAsyncClients.createDefault()) {
       /*
        * HttpReactiveClient does not support lifecycle management, so the underlying
-       * CloseableHttpAsyncClient needs to be started.
+       * CloseableHttpAsyncClient needs to be started and closed.
        */
       asyncClient.start();
       // HttpReactiveClient is just a thin wrapper
