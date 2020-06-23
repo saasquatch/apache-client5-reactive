@@ -2,11 +2,7 @@ package com.saasquatch.client5reactive;
 
 import java.nio.ByteBuffer;
 import java.util.Objects;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import org.apache.hc.client5.http.async.HttpAsyncClient;
-import org.apache.hc.client5.http.impl.async.MinimalHttpAsyncClient;
-import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.Message;
 import org.apache.hc.core5.http.nio.AsyncPushConsumer;
@@ -38,8 +34,8 @@ final class HttpReactiveClientImpl implements HttpReactiveClient {
     Objects.requireNonNull(requestProducer);
     Objects.requireNonNull(responseConsumer);
     return Maybe.<T>create(emitter -> {
-      httpAsyncClient.execute(requestProducer, responseConsumer, pushHandlerFactory,
-          defaultHttpContext(context), FutureCallbacks.maybeEmitter(emitter));
+      httpAsyncClient.execute(requestProducer, responseConsumer, pushHandlerFactory, context,
+          FutureCallbacks.maybeEmitter(emitter));
     }).toFlowable();
   }
 
@@ -56,23 +52,8 @@ final class HttpReactiveClientImpl implements HttpReactiveClient {
     return Maybe.<Message<HttpResponse, Publisher<ByteBuffer>>>create(emitter -> {
       final ReactiveResponseConsumer responseConsumer =
           new ReactiveResponseConsumer(FutureCallbacks.maybeEmitter(emitter));
-      httpAsyncClient.execute(requestProducer, responseConsumer, pushHandlerFactory,
-          defaultHttpContext(context), null);
+      httpAsyncClient.execute(requestProducer, responseConsumer, pushHandlerFactory, context, null);
     }).toFlowable();
-  }
-
-  /**
-   * Create a default {@link HttpContext} if the given one is null. In theory this method should not
-   * be needed, since according to the JavaDoc in {@link HttpAsyncClient}, {@link HttpContext} can
-   * be null. However, in Apache HttpClient version 5.0 there's a bug where some implementations of
-   * {@link HttpAsyncClient} like {@link MinimalHttpAsyncClient} reject null {@link HttpContext}. An
-   * issue has already been filed
-   * <a href="https://issues.apache.org/jira/browse/HTTPCLIENT-2059">here</a>. Once that's fixed,
-   * this method can be removed.
-   */
-  @Nonnull
-  private static HttpContext defaultHttpContext(@Nullable HttpContext context) {
-    return context == null ? HttpClientContext.create() : context;
   }
 
 }
