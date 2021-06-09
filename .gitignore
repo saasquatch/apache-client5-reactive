@@ -27,3 +27,6 @@ hs_err_pid*
 .settings
 /target/
 bin
+
+.idea
+*.iml
