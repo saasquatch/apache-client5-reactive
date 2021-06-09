@@ -2,8 +2,10 @@ package com.saasquatch.client5reactive;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import io.reactivex.rxjava3.core.Flowable;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
-import org.apache.hc.client5.http.async.methods.SimpleHttpRequests;
+import org.apache.hc.client5.http.async.methods.SimpleRequestBuilder;
 import org.apache.hc.client5.http.async.methods.SimpleRequestProducer;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 import org.apache.hc.client5.http.impl.async.HttpAsyncClients;
@@ -13,7 +15,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Publisher;
-import io.reactivex.rxjava3.core.Flowable;
 
 public class NullabilityTests {
 
@@ -32,6 +33,7 @@ public class NullabilityTests {
     asyncClient.close();
   }
 
+  @SuppressWarnings({"ConstantConditions", "RedundantCast"})
   @Test
   public void testNullability() {
     assertThrows(NullPointerException.class,
@@ -59,7 +61,7 @@ public class NullabilityTests {
   @Test
   public void testVoidPublisher() {
     final Publisher<Void> voidResultPublisher = reactiveClient.execute(
-        SimpleRequestProducer.create(SimpleHttpRequests.get("https://example.com")),
+        SimpleRequestProducer.create(SimpleRequestBuilder.get("https://example.com").build()),
         new ReactiveResponseConsumer());
     assertDoesNotThrow(() -> Flowable.fromPublisher(voidResultPublisher).blockingSubscribe());
   }

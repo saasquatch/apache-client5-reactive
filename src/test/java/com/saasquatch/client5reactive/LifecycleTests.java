@@ -1,10 +1,10 @@
 package com.saasquatch.client5reactive;
 
-import org.apache.hc.client5.http.async.methods.SimpleHttpRequests;
+import io.reactivex.rxjava3.core.Flowable;
+import org.apache.hc.client5.http.async.methods.SimpleRequestBuilder;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 import org.apache.hc.client5.http.impl.async.HttpAsyncClients;
 import org.junit.jupiter.api.Test;
-import io.reactivex.rxjava3.core.Flowable;
 
 public class LifecycleTests {
 
@@ -15,8 +15,8 @@ public class LifecycleTests {
     try (CloseableHttpAsyncClient asyncClient = HttpAsyncClients.createDefault()) {
       // Not started
       final HttpReactiveClient reactiveClient = HttpReactiveClients.create(asyncClient);
-      Flowable.fromPublisher(reactiveClient.execute(SimpleHttpRequests.get(EXAMPLE_URL))).test()
-          .assertError(IllegalStateException.class);
+      Flowable.fromPublisher(reactiveClient.execute(SimpleRequestBuilder.get(EXAMPLE_URL).build()))
+          .test().assertError(IllegalStateException.class);
     }
   }
 
@@ -28,8 +28,8 @@ public class LifecycleTests {
       reactiveClient = HttpReactiveClients.create(asyncClient);
     }
     // Closed
-    Flowable.fromPublisher(reactiveClient.execute(SimpleHttpRequests.get(EXAMPLE_URL))).test()
-        .assertError(IllegalStateException.class);
+    Flowable.fromPublisher(reactiveClient.execute(SimpleRequestBuilder.get(EXAMPLE_URL).build()))
+        .test().assertError(IllegalStateException.class);
   }
 
 }

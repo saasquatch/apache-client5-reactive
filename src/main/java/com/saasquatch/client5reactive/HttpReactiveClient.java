@@ -23,8 +23,8 @@ import org.reactivestreams.Publisher;
 /**
  * Thin wrapper around Apache {@link HttpAsyncClient} to expose
  * <a href="https://www.reactive-streams.org/">Reactive Streams</a> interfaces.<br>
- * The methods in this interface aim to mirror the ones in {@link HttpAsyncClient} and
- * {@link CloseableHttpAsyncClient}.
+ * The methods in this interface aim to mirror the ones in {@link HttpAsyncClient} and {@link
+ * CloseableHttpAsyncClient}.
  *
  * @author sli
  * @see HttpReactiveClients
@@ -32,11 +32,10 @@ import org.reactivestreams.Publisher;
 public interface HttpReactiveClient {
 
   /**
-   * Execute the given request. This method is equivalent to
-   * {@link HttpAsyncClient#execute(AsyncRequestProducer, AsyncResponseConsumer, HandlerFactory, HttpContext , FutureCallback)}.
-   * If the {@link Future} produced by the equivalent {@link HttpAsyncClient} method completes with
-   * {@code null}, then the returning {@link Publisher} of this method will complete with no
-   * element.
+   * Execute the given request. This method is equivalent to {@link HttpAsyncClient#execute(AsyncRequestProducer,
+   * AsyncResponseConsumer, HandlerFactory, HttpContext, FutureCallback)}. If the {@link Future}
+   * produced by the equivalent {@link HttpAsyncClient} method completes with {@code null}, then the
+   * returning {@link Publisher} of this method will complete with no element.
    */
   <T> Publisher<T> execute(@Nonnull AsyncRequestProducer requestProducer,
       @Nonnull AsyncResponseConsumer<T> responseConsumer,
@@ -44,10 +43,9 @@ public interface HttpReactiveClient {
       @Nullable HttpContext context);
 
   /**
-   * Convenience method for
-   * {@link #execute(AsyncRequestProducer, AsyncResponseConsumer, HandlerFactory, HttpContext)},
-   * equivalent to
-   * {@link CloseableHttpAsyncClient#execute(AsyncRequestProducer, AsyncResponseConsumer, HttpContext, FutureCallback)}
+   * Convenience method for {@link #execute(AsyncRequestProducer, AsyncResponseConsumer,
+   * HandlerFactory, HttpContext)}, equivalent to {@link CloseableHttpAsyncClient#execute(AsyncRequestProducer,
+   * AsyncResponseConsumer, HttpContext, FutureCallback)}
    */
   default <T> Publisher<T> execute(@Nonnull AsyncRequestProducer requestProducer,
       @Nonnull AsyncResponseConsumer<T> responseConsumer, @Nullable HttpContext context) {
@@ -55,10 +53,9 @@ public interface HttpReactiveClient {
   }
 
   /**
-   * Convenience method for
-   * {@link #execute(AsyncRequestProducer, AsyncResponseConsumer, HandlerFactory, HttpContext)},
-   * equivalent to
-   * {@link CloseableHttpAsyncClient#execute(AsyncRequestProducer, AsyncResponseConsumer, FutureCallback)}.
+   * Convenience method for {@link #execute(AsyncRequestProducer, AsyncResponseConsumer,
+   * HandlerFactory, HttpContext)}, equivalent to {@link CloseableHttpAsyncClient#execute(AsyncRequestProducer,
+   * AsyncResponseConsumer, FutureCallback)}.
    */
   default <T> Publisher<T> execute(@Nonnull AsyncRequestProducer requestProducer,
       @Nonnull AsyncResponseConsumer<T> responseConsumer) {
@@ -67,9 +64,8 @@ public interface HttpReactiveClient {
 
   /**
    * Execute a simple in-memory request and get a simple in-memory response. This method is
-   * equivalent to
-   * {@link CloseableHttpAsyncClient#execute(SimpleHttpRequest, HttpContext, FutureCallback)}. The
-   * returning {@link Publisher} completes with exactly 1 element.
+   * equivalent to {@link CloseableHttpAsyncClient#execute(SimpleHttpRequest, HttpContext,
+   * FutureCallback)}. The returning {@link Publisher} completes with exactly 1 element.
    */
   default Publisher<SimpleHttpResponse> execute(@Nonnull SimpleHttpRequest request,
       @Nullable HttpContext context) {
@@ -77,17 +73,17 @@ public interface HttpReactiveClient {
   }
 
   /**
-   * Convenience method for {@link #execute(SimpleHttpRequest, HttpContext)}, equivalent to
-   * {@link CloseableHttpAsyncClient#execute(SimpleHttpRequest, FutureCallback)}.
+   * Convenience method for {@link #execute(SimpleHttpRequest, HttpContext)}, equivalent to {@link
+   * CloseableHttpAsyncClient#execute(SimpleHttpRequest, FutureCallback)}.
    */
   default Publisher<SimpleHttpResponse> execute(@Nonnull SimpleHttpRequest request) {
     return execute(request, null);
   }
 
   /**
-   * Execute the given request and get a streaming response body as a {@link Publisher} of
-   * {@link ByteBuffer}s. The returning {@link Publisher} completes with exactly 1 element. The
-   * {@link Publisher} within the returning {@link Publisher} may contain 0 to n elements.
+   * Execute the given request and get a streaming response body as a {@link Publisher} of {@link
+   * ByteBuffer}s. The returning {@link Publisher} completes with exactly 1 element. The {@link
+   * Publisher} within the returning {@link Publisher} may contain 0 to n elements.
    */
   Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
       @Nonnull AsyncRequestProducer requestProducer,
@@ -95,8 +91,8 @@ public interface HttpReactiveClient {
       @Nullable HttpContext context);
 
   /**
-   * Convenience method for
-   * {@link #streamingExecute(AsyncRequestProducer, HandlerFactory, HttpContext)}
+   * Convenience method for {@link #streamingExecute(AsyncRequestProducer, HandlerFactory,
+   * HttpContext)}
    */
   default Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
       @Nonnull AsyncRequestProducer requestProducer, @Nullable HttpContext context) {
@@ -104,8 +100,8 @@ public interface HttpReactiveClient {
   }
 
   /**
-   * Convenience method for
-   * {@link #streamingExecute(AsyncRequestProducer, HandlerFactory, HttpContext)}
+   * Convenience method for {@link #streamingExecute(AsyncRequestProducer, HandlerFactory,
+   * HttpContext)}
    */
   default Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
       @Nonnull AsyncRequestProducer requestProducer) {
@@ -113,8 +109,8 @@ public interface HttpReactiveClient {
   }
 
   /**
-   * Execute a simple in-memory request and get a streaming response. Convenience method for
-   * {@link #streamingExecute(AsyncRequestProducer, HandlerFactory, HttpContext)}
+   * Execute a simple in-memory request and get a streaming response. Convenience method for {@link
+   * #streamingExecute(AsyncRequestProducer, HandlerFactory, HttpContext)}
    */
   default Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
       @Nonnull SimpleHttpRequest request, @Nullable HttpContext context) {
@@ -122,8 +118,8 @@ public interface HttpReactiveClient {
   }
 
   /**
-   * Convenience method for
-   * {@link #streamingExecute(AsyncRequestProducer, HandlerFactory, HttpContext)}
+   * Convenience method for {@link #streamingExecute(AsyncRequestProducer, HandlerFactory,
+   * HttpContext)}
    */
   default Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
       @Nonnull SimpleHttpRequest request) {
