@@ -43,8 +43,8 @@ public class Example {
       System.out.println("----------");
       // Execute a streaming request
       // In this case, the request is a simple in-memory request without a request body
-      Single.fromPublisher(reactiveClient
-          .streamingExecute(SimpleRequestBuilder.get("https://www.example.com").build()))
+      Single.fromPublisher(reactiveClient.streamingExecute(
+          SimpleRequestBuilder.get("https://www.example.com").build()))
           .flatMapPublisher(message -> {
             // Get the status before subscribing to the streaming body
             System.out.println(message.getHead().getCode());
