@@ -1,13 +1,14 @@
 package com.saasquatch.client5reactive.examples;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import java.nio.ByteBuffer;
-import org.apache.hc.client5.http.async.methods.SimpleHttpRequests;
-import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
-import org.apache.hc.client5.http.impl.async.HttpAsyncClients;
+
 import com.saasquatch.client5reactive.HttpReactiveClient;
 import com.saasquatch.client5reactive.HttpReactiveClients;
 import io.reactivex.rxjava3.core.Single;
+import java.nio.ByteBuffer;
+import org.apache.hc.client5.http.async.methods.SimpleRequestBuilder;
+import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
+import org.apache.hc.client5.http.impl.async.HttpAsyncClients;
 
 public class Example {
 
@@ -22,8 +23,8 @@ public class Example {
       // HttpReactiveClient is just a thin wrapper
       final HttpReactiveClient reactiveClient = HttpReactiveClients.create(asyncClient);
       // Execute a simple in-memory request
-      Single
-          .fromPublisher(reactiveClient.execute(SimpleHttpRequests.get("https://www.example.com")))
+      Single.fromPublisher(
+          reactiveClient.execute(SimpleRequestBuilder.get("https://www.example.com").build()))
           .doOnSuccess(response -> {
             // Get the response status and body in memory
             System.out.println(response.getCode());
@@ -33,9 +34,8 @@ public class Example {
       System.out.println("----------");
       // Execute a streaming request
       // In this case, the request is a simple in-memory request without a request body
-      Single
-          .fromPublisher(
-              reactiveClient.streamingExecute(SimpleHttpRequests.get("https://www.example.com")))
+      Single.fromPublisher(reactiveClient.streamingExecute(
+          SimpleRequestBuilder.get("https://www.example.com").build()))
           .flatMapPublisher(message -> {
             // Get the status before subscribing to the streaming body
             System.out.println(message.getHead().getCode());

@@ -2,6 +2,7 @@ package com.saasquatch.client5reactive;
 
 import java.nio.ByteBuffer;
 import java.util.Objects;
+import javax.annotation.Nullable;
 import org.apache.hc.client5.http.async.HttpAsyncClient;
 import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.Message;
@@ -13,6 +14,8 @@ import org.apache.hc.core5.http.protocol.HttpContext;
 import org.apache.hc.core5.reactive.ReactiveResponseConsumer;
 import org.reactivestreams.Publisher;
 import io.reactivex.rxjava3.core.Maybe;
+
+import javax.annotation.Nonnull;
 
 /**
  * Concrete implementation of {@link HttpReactiveClient}.
@@ -28,11 +31,13 @@ final class HttpReactiveClientImpl implements HttpReactiveClient {
   }
 
   @Override
-  public <T> Publisher<T> execute(AsyncRequestProducer requestProducer,
-      AsyncResponseConsumer<T> responseConsumer,
-      HandlerFactory<AsyncPushConsumer> pushHandlerFactory, HttpContext context) {
+  public <T> Publisher<T> execute(@Nonnull AsyncRequestProducer requestProducer,
+      @Nonnull AsyncResponseConsumer<T> responseConsumer,
+      @Nullable HandlerFactory<AsyncPushConsumer> pushHandlerFactory,
+      @Nullable HttpContext context) {
     Objects.requireNonNull(requestProducer);
     Objects.requireNonNull(responseConsumer);
+    //noinspection CodeBlock2Expr
     return Maybe.<T>create(emitter -> {
       httpAsyncClient.execute(requestProducer, responseConsumer, pushHandlerFactory, context,
           FutureCallbacks.maybeEmitter(emitter));
@@ -41,8 +46,9 @@ final class HttpReactiveClientImpl implements HttpReactiveClient {
 
   @Override
   public Publisher<Message<HttpResponse, Publisher<ByteBuffer>>> streamingExecute(
-      AsyncRequestProducer requestProducer, HandlerFactory<AsyncPushConsumer> pushHandlerFactory,
-      HttpContext context) {
+      @Nonnull AsyncRequestProducer requestProducer,
+      @Nullable HandlerFactory<AsyncPushConsumer> pushHandlerFactory,
+      @Nullable HttpContext context) {
     Objects.requireNonNull(requestProducer);
     /*
      * Semantically this should be a Single instead of a Maybe, but using Single here requires an

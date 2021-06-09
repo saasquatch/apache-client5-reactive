@@ -1,13 +1,15 @@
 package com.saasquatch.client5reactive;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+
+import io.reactivex.rxjava3.core.Flowable;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
-import org.apache.hc.client5.http.async.methods.SimpleHttpRequests;
+import org.apache.hc.client5.http.async.methods.SimpleRequestBuilder;
 import org.apache.hc.client5.http.async.methods.SimpleRequestProducer;
 import org.apache.hc.client5.http.async.methods.SimpleResponseConsumer;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
@@ -19,7 +21,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Publisher;
-import io.reactivex.rxjava3.core.Flowable;
 
 public class StreamingTests {
 
@@ -34,8 +35,8 @@ public class StreamingTests {
     asyncClient = HttpAsyncClients.createDefault();
     asyncClient.start();
     reactiveClient = HttpReactiveClients.create(asyncClient);
-    flowableSourceBytes =
-        asyncClient.execute(SimpleHttpRequests.get(FLOWABLE_SOURCE_URL), null).get().getBodyBytes();
+    flowableSourceBytes = asyncClient.execute(
+        SimpleRequestBuilder.get(FLOWABLE_SOURCE_URL).build(), null).get().getBodyBytes();
   }
 
   @AfterAll
@@ -46,7 +47,7 @@ public class StreamingTests {
   @Test
   public void testVanillaExecuteWorks() {
     final byte[] bodyBytes = Flowable.fromPublisher(reactiveClient.execute(
-        SimpleRequestProducer.create(SimpleHttpRequests.get(FLOWABLE_SOURCE_URL)),
+        SimpleRequestProducer.create(SimpleRequestBuilder.get(FLOWABLE_SOURCE_URL).build()),
         SimpleResponseConsumer.create())).blockingSingle().getBodyBytes();
     assertArrayEquals(flowableSourceBytes, bodyBytes);
   }
@@ -55,7 +56,7 @@ public class StreamingTests {
   public void testVanillaStreamingWorks() {
     final byte[] bodyBytes = Flowable
         .fromPublisher(reactiveClient.streamingExecute(
-            SimpleRequestProducer.create(SimpleHttpRequests.get(FLOWABLE_SOURCE_URL))))
+            SimpleRequestProducer.create(SimpleRequestBuilder.get(FLOWABLE_SOURCE_URL).build())))
         .concatMap(Message::getBody).to(this::toByteArray);
     assertArrayEquals(flowableSourceBytes, bodyBytes);
   }
@@ -63,27 +64,29 @@ public class StreamingTests {
   @Test
   public void testBasicStreamingWorks() {
     final byte[] bodyBytes = Flowable
-        .fromPublisher(reactiveClient.streamingExecute(SimpleHttpRequests.get(FLOWABLE_SOURCE_URL)))
+        .fromPublisher(
+            reactiveClient.streamingExecute(SimpleRequestBuilder.get(FLOWABLE_SOURCE_URL).build()))
         .concatMap(Message::getBody).to(this::toByteArray);
     assertArrayEquals(flowableSourceBytes, bodyBytes);
   }
 
   @Test
-  public void testWithMinimalClient() throws Exception {
+  public void testWithMinimalClient() {
     try (MinimalHttpAsyncClient asyncClient = HttpAsyncClients.createMinimal()) {
       asyncClient.start();
       final HttpReactiveClient reactiveClient = HttpReactiveClients.create(asyncClient);
       {
         final byte[] bodyBytes = Flowable
             .fromPublisher(
-                reactiveClient.streamingExecute(SimpleHttpRequests.get(FLOWABLE_SOURCE_URL), null))
+                reactiveClient
+                    .streamingExecute(SimpleRequestBuilder.get(FLOWABLE_SOURCE_URL).build(), null))
             .concatMap(Message::getBody).to(this::toByteArray);
         assertArrayEquals(flowableSourceBytes, bodyBytes);
       }
       {
         final byte[] bodyBytes = Flowable
             .fromPublisher(reactiveClient.streamingExecute(
-                SimpleHttpRequests.get(FLOWABLE_SOURCE_URL), new BasicHttpContext()))
+                SimpleRequestBuilder.get(FLOWABLE_SOURCE_URL).build(), new BasicHttpContext()))
             .concatMap(Message::getBody).to(this::toByteArray);
         assertArrayEquals(flowableSourceBytes, bodyBytes);
       }
@@ -92,7 +95,7 @@ public class StreamingTests {
 
   private byte[] toByteArray(Publisher<ByteBuffer> pub) {
     try (ByteArrayOutputStream out = new ByteArrayOutputStream();
-        WritableByteChannel channel = Channels.newChannel(out);) {
+        WritableByteChannel channel = Channels.newChannel(out)) {
       Flowable.fromPublisher(pub).blockingForEach(channel::write);
       return out.toByteArray();
     } catch (IOException e) {
