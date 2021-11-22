@@ -1,7 +1,7 @@
 # apache-client5-reactive
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Build Status](https://travis-ci.org/saasquatch/apache-client5-reactive.svg?branch=master)](https://travis-ci.org/saasquatch/apache-client5-reactive)
+[![JavaCI](https://github.com/saasquatch/apache-client5-reactive/actions/workflows/JavaCI.yml/badge.svg?branch=master)](https://github.com/saasquatch/saasquatch-java-sdk/actions/workflows/JavaCI.yml)
 [![](https://jitpack.io/v/saasquatch/apache-client5-reactive.svg)](https://jitpack.io/#saasquatch/apache-client5-reactive)
 
 Thin wrapper around [Apache HttpComponents](https://hc.apache.org/) HttpAsyncClient 5.x to expose [Reactive Streams](https://www.reactive-streams.org) interfaces.
