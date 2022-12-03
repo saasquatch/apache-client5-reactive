@@ -1,7 +1,9 @@
 package com.saasquatch.client5reactive;
 
+import io.reactivex.rxjava3.core.Maybe;
 import java.nio.ByteBuffer;
 import java.util.Objects;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.apache.hc.client5.http.async.HttpAsyncClient;
 import org.apache.hc.core5.http.HttpResponse;
@@ -13,9 +15,6 @@ import org.apache.hc.core5.http.nio.HandlerFactory;
 import org.apache.hc.core5.http.protocol.HttpContext;
 import org.apache.hc.core5.reactive.ReactiveResponseConsumer;
 import org.reactivestreams.Publisher;
-import io.reactivex.rxjava3.core.Maybe;
-
-import javax.annotation.Nonnull;
 
 /**
  * Concrete implementation of {@link HttpReactiveClient}.

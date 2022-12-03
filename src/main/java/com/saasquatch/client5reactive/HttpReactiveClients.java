@@ -19,9 +19,9 @@ public final class HttpReactiveClients {
   /**
    * Create a {@link HttpReactiveClient} from a given {@link HttpAsyncClient}. Note that the created
    * {@link HttpReactiveClient} is simply a wrapper of the {@link HttpAsyncClient} and does not
-   * support state management, so you'll need to manage the state of the given {@link
-   * HttpAsyncClient} yourself by calling {@link CloseableHttpAsyncClient#start()}, {@link
-   * CloseableHttpAsyncClient#close()}, etc.
+   * support state management, so you'll need to manage the state of the given
+   * {@link HttpAsyncClient} yourself by calling {@link CloseableHttpAsyncClient#start()},
+   * {@link CloseableHttpAsyncClient#close()}, etc.
    */
   @Nonnull
   public static HttpReactiveClient create(@Nonnull HttpAsyncClient httpAsyncClient) {

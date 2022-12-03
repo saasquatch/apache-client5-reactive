@@ -1,8 +1,8 @@
 package com.saasquatch.client5reactive;
 
+import io.reactivex.rxjava3.core.MaybeEmitter;
 import java.util.concurrent.CancellationException;
 import org.apache.hc.core5.concurrent.FutureCallback;
-import io.reactivex.rxjava3.core.MaybeEmitter;
 
 /**
  * Utilities for {@link FutureCallback}s. Not public.

@@ -24,7 +24,7 @@ public class Example {
       final HttpReactiveClient reactiveClient = HttpReactiveClients.create(asyncClient);
       // Execute a simple in-memory request
       Single.fromPublisher(
-          reactiveClient.execute(SimpleRequestBuilder.get("https://www.example.com").build()))
+              reactiveClient.execute(SimpleRequestBuilder.get("https://www.example.com").build()))
           .doOnSuccess(response -> {
             // Get the response status and body in memory
             System.out.println(response.getCode());
@@ -35,7 +35,7 @@ public class Example {
       // Execute a streaming request
       // In this case, the request is a simple in-memory request without a request body
       Single.fromPublisher(reactiveClient.streamingExecute(
-          SimpleRequestBuilder.get("https://www.example.com").build()))
+              SimpleRequestBuilder.get("https://www.example.com").build()))
           .flatMapPublisher(message -> {
             // Get the status before subscribing to the streaming body
             System.out.println(message.getHead().getCode());
