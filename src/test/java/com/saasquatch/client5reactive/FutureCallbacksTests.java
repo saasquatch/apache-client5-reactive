@@ -1,10 +1,10 @@
 package com.saasquatch.client5reactive;
 
+import io.reactivex.rxjava3.core.Maybe;
 import java.io.IOException;
 import java.util.concurrent.CancellationException;
 import org.apache.hc.core5.concurrent.BasicFuture;
 import org.junit.jupiter.api.Test;
-import io.reactivex.rxjava3.core.Maybe;
 
 public class FutureCallbacksTests {
 
