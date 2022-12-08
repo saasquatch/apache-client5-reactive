@@ -101,14 +101,14 @@ Maven
 <dependency>
   <groupId>com.github.saasquatch</groupId>
   <artifactId>apache-client5-reactive</artifactId>
-  <version>0.0.5</version>
+  <version>0.0.6</version>
 </dependency>
 ```
 
 Gradle
 
 ```gradle
-implementation 'com.github.saasquatch:apache-client5-reactive:0.0.5'
+implementation 'com.github.saasquatch:apache-client5-reactive:0.0.6'
 ```
 
 ## License
