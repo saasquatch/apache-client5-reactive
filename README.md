@@ -33,7 +33,7 @@ public class Example {
       final HttpReactiveClient reactiveClient = HttpReactiveClients.create(asyncClient);
       // Execute a simple in-memory request
       Single.fromPublisher(
-          reactiveClient.execute(SimpleRequestBuilder.get("https://www.example.com").build()))
+              reactiveClient.execute(SimpleRequestBuilder.get("https://www.example.com").build()))
           .doOnSuccess(response -> {
             // Get the response status and body in memory
             System.out.println(response.getCode());
@@ -44,7 +44,7 @@ public class Example {
       // Execute a streaming request
       // In this case, the request is a simple in-memory request without a request body
       Single.fromPublisher(reactiveClient.streamingExecute(
-          SimpleRequestBuilder.get("https://www.example.com").build()))
+              SimpleRequestBuilder.get("https://www.example.com").build()))
           .flatMapPublisher(message -> {
             // Get the status before subscribing to the streaming body
             System.out.println(message.getHead().getCode());
@@ -101,14 +101,14 @@ Maven
 <dependency>
   <groupId>com.github.saasquatch</groupId>
   <artifactId>apache-client5-reactive</artifactId>
-  <version>0.0.6</version>
+  <version>0.0.7</version>
 </dependency>
 ```
 
 Gradle
 
 ```gradle
-implementation 'com.github.saasquatch:apache-client5-reactive:0.0.6'
+implementation 'com.github.saasquatch:apache-client5-reactive:0.0.7'
 ```
 
 ## License
