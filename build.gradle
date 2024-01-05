@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'com.saasquatch'
-version = '0.0.6-SNAPSHOT'
+version = '0.0.7-SNAPSHOT'
 
 tasks.compileJava.options.encoding = 'UTF-8'
 tasks.compileTestJava.options.encoding = 'UTF-8'
